@@ -62,11 +62,32 @@
       background: black;
       position: absolute;
       top: 50%;
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     }
 
   </style>
 
   <script>
+    var time, hours, minutes, seconds;
+    setInterval(() => {
+      time = new Date();
+      hours = time.getHours();
+      if (hours === 0) {
+        hours = 12;
+      }
+      if (hours > 12) {
+        hours = hours -12;
+      }
+      minutes = time.getMinutes();
+      seconds = time.getSeconds();
+      var hourHand = document.getElementsByClassName('hour-hand')[0];
+      var minuteHand = document.getElementsByClassName('min-hand')[0];
+      var secondHand = document.getElementsByClassName('second-hand')[0];
+      hourHand.setAttribute("style", `transform: rotate(${90 + (360/12)*(hours + minutes/60 + seconds/3600)}deg); transform-origin: center right;`);
+      minuteHand.setAttribute("style", `transform: rotate(${90 + (360/60)*(minutes + seconds/60)}deg); transform-origin: center right;`);
+      secondHand.setAttribute("style", `transform: rotate(${90 + (360/60)*seconds}deg); transform-origin: center right;`);
+    }, 1000);
 
 
   </script>
