@@ -25,6 +25,13 @@
     /*
       misc styles, nothing to do with CSS variables
     */
+    :root {
+      --blur: 10px;
+      --base: #ffc600;
+      --spacing: 10px;
+    }
+
+
 
     body {
       text-align: center;
@@ -42,9 +49,34 @@
     input {
       width: 100px;
     }
+    img {
+      filter: blur(var( --blur));
+      background: var(--base);
+      padding:  var(--spacing);
+    }
+
+    .hl {
+      color: var(--base);
+    }
   </style>
 
   <script>
+    var imgArea = document.querySelector('img');
+    var allControls= document.querySelector('.controls')
+    var setValues = (name,value,sizing) => {
+      const suffix = sizing || '';
+      console.log(name,value,sizing);
+      document.documentElement.style.setProperty(`--${name}`, `${value}${suffix}`)
+      }
+    allControls.addEventListener('input', (e) => {
+      //console.log(e.target.name, e.target.value, e.target.dataset.sizing);
+      setValues(e.target.name, e.target.value, e.target.dataset.sizing);
+    })
+    // allControls.addEventListener('mousemove', (e) => {
+    //   //console.log(e.target.name, e.target.value, e.target.dataset.sizing);
+    //   setValues(e.target.name, e.target.value, e.target.dataset.sizing);
+    // })
+
   </script>
 
 </body>
