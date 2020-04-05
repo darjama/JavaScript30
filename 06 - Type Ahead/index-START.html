@@ -16,7 +16,50 @@
   </form>
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const cities = [];
+fetch(endpoint)
+  .then(data => data.json())
+  .then(results => cities.push(...results))
+var search = document.querySelector(".search");
 
+function citiesFilter(text) {
+  return cities.filter(a => (a.city + a.state).toUpperCase().includes(text.toUpperCase()))
+}
+
+function commaDelimString(text){
+  var result = text;
+    for (i = text.length - 1; i >= 0; i--) {
+      if ((text.length - i) % 3 === 0 && i > 0) {
+        result = result.substring(0,i) + ',' + result.substring(i);
+      }
+    }
+  return result;
+}
+
+function addListItems(items, text) {
+  var ul = document.getElementsByClassName('suggestions')[0];
+  var regex = new RegExp(text, 'gi');
+  html = items.map (item => {
+    let pop = commaDelimString(item.population);
+    let city = item.city.replace(regex, `<span class="hl">${text}</span>`)
+    let state = item.state.replace(regex, `<span class="hl">${text}</span>`)
+    return `
+      <li>
+        <span>
+          ${city}, ${state}
+        </span>
+        <span class="population">
+          ${pop}
+        </span>
+      </li>`;
+  }).join('');
+  ul.innerHTML = html;
+}
+
+search.addEventListener('input', (e) => {
+  let cityList = citiesFilter(e.target.value);
+  addListItems(cityList, e.target.value);
+})
 </script>
 </body>
 </html>
