@@ -41,12 +41,11 @@ function addListItems(items, text) {
   var regex = new RegExp(text, 'gi');
   html = items.map (item => {
     let pop = commaDelimString(item.population);
-    let city = item.city.replace(regex, `<span class="hl">${text}</span>`)
-    let state = item.state.replace(regex, `<span class="hl">${text}</span>`)
+    let cityState = (item.city + ', ' + item.state).replace(regex, `<span class="hl">${text}</span>`)
     return `
       <li>
         <span>
-          ${city}, ${state}
+          ${cityState}
         </span>
         <span class="population">
           ${pop}
