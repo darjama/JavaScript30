@@ -96,6 +96,32 @@
   </div>
 
 <script>
+  var isShifted = false;
+  var lastChecked = null;
+  var checkboxes = document.querySelector('.inbox');
+  var childArray = [...checkboxes.childNodes]
+  checkboxes.addEventListener('change', e => {
+    if (isShifted && lastChecked >= 0 && e.target.checked) {
+      shiftMark(childArray.indexOf(e.target.parentNode));
+    }
+    lastChecked = childArray.indexOf(e.target.parentNode);
+  })
+
+  function shiftMark(box) {
+    var start = lastChecked;
+    var end = box;
+    if (box < lastChecked) {
+      start = box;
+      end = lastChecked;
+    }
+    for (let i = start; i <= end; i++) {
+      let inputNodes = [...childArray[i].childNodes]
+      if (inputNodes[1]) inputNodes[1].checked = true;
+    }
+  }
+
+  document.onkeydown = () => isShifted = true;
+  document.onkeyup =() => isShifted = false;
 </script>
 </body>
 </html>
